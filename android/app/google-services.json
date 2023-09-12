@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "800689556727",
+    "project_id": "fake-shop-app-5747d",
+    "storage_bucket": "fake-shop-app-5747d.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:800689556727:android:34458ae0c04ac6e668d7f2",
+        "android_client_info": {
+          "package_name": "com.hassanElamin.fakeShopApp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "800689556727-s4ua2pj7fed3kub17l20of11lgb5sh31.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.hassanElamin.fakeShopApp",
+            "certificate_hash": "a3aacca35aa468a502089b72385620f96792d3fe"
+          }
+        },
+        {
+          "client_id": "800689556727-49an3i7majg73u9rl8ajcid1k55hdfnu.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB3YduD24ESA_8uCw6W6hj-OmqvwlM38Rw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "800689556727-49an3i7majg73u9rl8ajcid1k55hdfnu.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
