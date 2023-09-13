@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:bloc/bloc.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:fake_shop_app/business_logic/cubit/settings_cubit/settings_cubit.dart';
 import 'package:fake_shop_app/core/helper/dateTime_helper.dart';
 import 'package:fake_shop_app/core/helper/image_helper.dart';
@@ -70,12 +71,11 @@ class UserCubit extends Cubit<UserState> {
       return null;
     } catch (exception) {
       String e = exception.toString();
-      print(exception.toString());
       emit(UserNotSigned());
       if (e.contains('The password is invalid')) {
-        return 'password is wrong';
+        return 'password is wrong'.tr();
       } else if (e.contains('There is no user')) {
-        return 'there is no user  connected with that email';
+        return 'there is no user  connected with that email'.tr();
       } else {
         return exception.toString();
       }
@@ -89,7 +89,7 @@ class UserCubit extends Cubit<UserState> {
       bool hasStorage =
           await _firestoreServices.isUserHasStorage(userModel.uid);
       if (hasStorage) {
-        userModel.userOtherData = await restoreUserOtherData();
+        userModel.userOtherData = await restoreUserOtherData(userModel.uid);
         List<dynamic> transactions =
             await _firestoreServices.getUserPurchaseHistory(userModel.uid);
         Map map = {};
@@ -110,7 +110,7 @@ class UserCubit extends Cubit<UserState> {
         );
       }
       currentUser = userModel;
-      UserSettings settings = currentUser.userOtherData.userSettings;
+      final UserSettings settings = currentUser.userOtherData.userSettings;
       await _userDataBox.putAll(userModel.toJson());
       await _settingsBox.putAll(userModel.userOtherData.userSettings.toJson());
       settingsCubit.changeTheme(settings.theme);
@@ -157,11 +157,6 @@ class UserCubit extends Cubit<UserState> {
     }
   }
 
-  Future<void> logOut() async {
-    await _authServices.logOut();
-    emit(UserNotSigned());
-  }
-
   Future<bool> resetPassword(String email) async {
     bool sent = false;
     await _authServices.sendPasswordRestMessage(email).whenComplete(() {
@@ -191,10 +186,11 @@ class UserCubit extends Cubit<UserState> {
     }
   }
 
-  Future<UserOtherData> restoreUserOtherData() async {
+  Future<UserOtherData> restoreUserOtherData([String? uid]) async {
     try {
-      Map<String, dynamic> data =
-          await _firestoreServices.getUserSettingsData(currentUser.uid) ?? {};
+      Map<String, dynamic> data = await _firestoreServices
+              .getUserSettingsData(uid ?? currentUser.uid) ??
+          {};
       final userData = UserOtherData.fromJson(data);
       return userData;
     } catch (exception) {
@@ -215,11 +211,12 @@ class UserCubit extends Cubit<UserState> {
     }
   }
 
-  Future<void> updateUserData(
-      {String? username,
-      DateTime? birthdate,
-      File? img,
-      String? gender}) async {
+  Future<void> updateUserData({
+    String? username,
+    DateTime? birthdate,
+    File? img,
+    String? gender,
+  }) async {
     try {
       if (username != null) {
         await _authServices.updateDisplayName(name: username).then((value) {
@@ -253,5 +250,10 @@ class UserCubit extends Cubit<UserState> {
         throw (exception.toString());
       }
     }
+  }
+
+  Future<void> logOut() async {
+    await _authServices.logOut();
+    emit(UserNotSigned());
   }
 }
